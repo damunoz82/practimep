@@ -2,15 +2,14 @@ package com.karinasoft.practimep.controllers;
 
 import org.springframework.web.bind.annotation.RestController;
 
-import com.datastax.driver.core.querybuilder.QueryBuilder;
-import com.datastax.driver.core.querybuilder.Select;
-import com.datastax.driver.core.querybuilder.Select.Where;
 import com.karinasoft.practimep.domain.Student;
+import com.karinasoft.practimep.workers.StudentWorkers;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.cassandra.core.CassandraOperations;
+import javax.validation.Valid;
+
+import org.jboss.logging.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,56 +19,55 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 @RestController
 public class StudentController {
-
-	@Autowired
-	private CassandraOperations cassandraTemplate;
 	
-	@RequestMapping(value = "/students/{id}", method = RequestMethod.DELETE)
-	public ResponseEntity<Object> deleteStudent(@PathVariable("id") String id) {
-		System.out.println("In Delete Student..., deleting id");
-		
-		Where select = QueryBuilder.select().from("student").where(QueryBuilder.eq("id", id));
-		Student student = cassandraTemplate.selectOne(select, Student.class);
-		
-		cassandraTemplate.delete(student);
+	final static Logger logger = Logger.getLogger(StudentController.class);
 
-		return new ResponseEntity<>("Product is deleted successsfully", HttpStatus.OK);
+	@RequestMapping(value = "/students/{id}", method = RequestMethod.DELETE)
+	public ResponseEntity<Object> deleteStudent(@PathVariable("id") int id) {
+		
+		logger.debug("In delete student - id: " + id);
+		StudentWorkers worker = new StudentWorkers();
+		worker.deleteStudent(id);
+
+		return new ResponseEntity<>("Student was deleted successsfully", HttpStatus.OK);
 	}
 
 	@RequestMapping(value = "/students/{id}", method = RequestMethod.PUT)
-	public ResponseEntity<Object> updateStudent(@PathVariable("id") String id, @RequestBody Student student) {
-		System.out.println("In Update Student..., updateing: " + student.toString());
+	public ResponseEntity<Object> updateStudent(@PathVariable("id") String id, @Valid @RequestBody Student student) {
 		
-		cassandraTemplate.update(student);
+		logger.debug("In update student - student: " + student.toString());
+		StudentWorkers worker = new StudentWorkers();
+		worker.updateStudent(student);
 
-		return new ResponseEntity<>("Product is updated successsfully", HttpStatus.OK);
+		return new ResponseEntity<>("Student was updated successsfully", HttpStatus.OK);
 	}
 
 	@RequestMapping(value = "/students", method = RequestMethod.POST)
-	public ResponseEntity<Object> createStudent(@RequestBody Student student) {
-		System.out.println("In Create Student..., saving: " + student.toString());
+	public ResponseEntity<Object> createStudent(@Valid @RequestBody Student student) {
 		
-		cassandraTemplate.insert(student);
+		logger.debug("In create student - student: " + student.toString());
+		StudentWorkers worker = new StudentWorkers();
+		worker.createStudent(student);
 
-		return new ResponseEntity<>("Product is created successfully", HttpStatus.CREATED);
+		return new ResponseEntity<>("Student was created successfully", HttpStatus.CREATED);
 	}
 
 	@RequestMapping(value = "/students", method = RequestMethod.GET)
 	public ResponseEntity<Object> getStudents() {
-		System.out.println("In get all Students Student...");
 		
-		Select select = QueryBuilder.select().from("student");
-		List<Student> students = cassandraTemplate.select(select, Student.class);
+		logger.debug("In get all student");
+		StudentWorkers worker = new StudentWorkers();
+		List<Student> students = worker.getAllStudents();
 		
 		return new ResponseEntity<>(students, HttpStatus.OK);
 	}
 	
 	@RequestMapping(value = "/students/{id}", method = RequestMethod.GET)
 	public ResponseEntity<Object> getStudent(@PathVariable("id") int id) {
-		System.out.println("In get single Students Student..., id: " + id);
 		
-		Where select = QueryBuilder.select().from("student").where(QueryBuilder.eq("id", id));
-		Student student = cassandraTemplate.selectOne(select, Student.class);
+		logger.debug("In get student - id: " + id);
+		StudentWorkers worker = new StudentWorkers();
+		Student student = worker.getStudent(id);
 		
 		return new ResponseEntity<>(student, HttpStatus.OK);
 	}

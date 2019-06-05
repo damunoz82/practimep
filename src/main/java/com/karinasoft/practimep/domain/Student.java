@@ -2,6 +2,10 @@ package com.karinasoft.practimep.domain;
 
 import org.springframework.data.cassandra.core.mapping.Table;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Positive;
+import javax.validation.constraints.Size;
+
 import org.springframework.data.cassandra.core.cql.Ordering;
 import org.springframework.data.cassandra.core.cql.PrimaryKeyType;
 import org.springframework.data.cassandra.core.mapping.Column;
@@ -12,11 +16,18 @@ public class Student {
 	
 	@PrimaryKeyColumn(name = "id", ordinal = 2, type = PrimaryKeyType.PARTITIONED, ordering = Ordering.DESCENDING)
 	private Long id;
+	
 	@Column
+	@Positive
+	@Max(value=99, message="Age cant be greater than 99")
 	private int age;
+	
 	@Column
+	@Size(min=2, max=50, message="Last Name should have atleast 2 characters")
 	private String firstname;
+	
 	@Column
+	@Size(min=2, max=50, message="Last Name should have atleast 2 characters")
 	private String lastname;
 
 	public Long getId() {

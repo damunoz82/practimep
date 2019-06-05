@@ -29,13 +29,13 @@ public class SwaggerConfig {
     
     private ApiInfo getApiInfo() {
         return new ApiInfo(
-                "TITLE",
-                "DESCIPRION",
-                "VERSION",
-                "TERMS OF SERVICE URL",
-                new Contact("NAME","URL","EMAIL"),
-                "LICENSE",
-                "LICENSE URL",
+                "Practica MEP",
+                "Ejercicios Practicos segun el programa de estudios del MEP",
+                "0.1",
+                "pending",
+                new Contact("Daniel Munoz","none","daniel.munoz@karinasoft.com"),
+                "GNU",
+                "Google GNU",
                 Collections.emptyList()
         );
     }

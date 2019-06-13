@@ -1,6 +1,14 @@
 server:
   port: 8080
 
+cassandra:
+  contactpoints: 192.168.1.50
+  port: 9042
+  keyspace: sample_demo
+  basePackages: com.karinasoft.practimep.db.repository
+  username: developer
+  password: Develop1
+
 logging:
   level:
     root: INFO
@@ -11,3 +19,36 @@ logging:
 spring:
   thymeleaf:
     cache: false
+  security:
+      oauth2:
+        client:
+          registration:
+            google:
+              clientId: 394339990659-h4buadni96tk0u6i1j6ot1m6fgrq8caj.apps.googleusercontent.com
+              clientSecret: lK93WZTXGTHZBhbDpTAllAuc
+              redirectUriTemplate: "{baseUrl}/oauth2/callback/{registrationId}"
+              scope:
+                - email
+                - profile
+            facebook:
+              clientId: 345974079433578
+              clientSecret: 6a682ace7f4367045f49709ceb0ccd5a
+              redirectUriTemplate: "{baseUrl}/oauth2/callback/{registrationId}"
+              scope:
+                - email
+                - public_profile
+          provider:
+            facebook:
+              authorizationUri: https://www.facebook.com/v3.0/dialog/oauth
+              tokenUri: https://graph.facebook.com/v3.0/oauth/access_token
+              userInfoUri: https://graph.facebook.com/v3.0/me?fields=id,first_name,middle_name,last_name,name,email,verified,is_verified,picture.width(250).height(250)
+    
+app:
+  auth:
+    tokenSecret: 926D96C90030DD58429D2751AC1BDBBC
+    tokenExpirationMsec: 864000000
+  oauth2:
+    authorizedRedirectUris:
+       - http://localhost:3000/oauth2/redirect
+       - myandroidapp://oauth2/redirect
+       - myiosapp://oauth2/redirect

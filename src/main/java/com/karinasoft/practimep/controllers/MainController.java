@@ -17,14 +17,17 @@ import reactor.core.publisher.Mono;
 import java.util.Collections;
 import java.util.Map;
 
-@Controller
+//@Controller
 public class MainController {
+	
+	/*
 
 	@Autowired
 	private OAuth2AuthorizedClientService authorizedClientService;
 
 	@GetMapping("/")
 	public String index(Model model, OAuth2AuthenticationToken authentication) {
+		System.out.println("In Index....... ========================================================");
 		OAuth2AuthorizedClient authorizedClient =
 				this.authorizedClientService.loadAuthorizedClient(
 						authentication.getAuthorizedClientRegistrationId(),
@@ -66,4 +69,5 @@ public class MainController {
 				return Mono.just(authorizedRequest);
 			});
 	}
+	*/
 }

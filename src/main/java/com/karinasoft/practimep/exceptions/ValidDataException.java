@@ -1,4 +1,4 @@
-package com.karinasoft.practimep.utils;
+package com.karinasoft.practimep.exceptions;
 
 
 import java.util.Date;

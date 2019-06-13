@@ -2,7 +2,6 @@ package com.karinasoft.practimep.workers;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.cassandra.core.CassandraOperations;
 
 import com.datastax.driver.core.querybuilder.QueryBuilder;
@@ -12,8 +11,11 @@ import com.karinasoft.practimep.domain.Student;
 
 public class StudentWorkers {
 
-	@Autowired
 	private CassandraOperations cassandraTemplate;
+	
+	public StudentWorkers(CassandraOperations cassandraTemplate) {
+		this.cassandraTemplate = cassandraTemplate;
+	}
 	
 	public boolean deleteStudent(int id) {
 		Student student = getStudent(id);

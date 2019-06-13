@@ -18,16 +18,16 @@ public class Student {
 	private Long id;
 	
 	@Column
-	@Positive
+	@Positive(message="Age has to be greater than 0")
 	@Max(value=99, message="Age cant be greater than 99")
 	private int age;
 	
 	@Column
-	@Size(min=2, max=50, message="Last Name should have atleast 2 characters")
+	@Size(min=2, max=50, message="Last Name should have at least 2 characters")
 	private String firstname;
 	
 	@Column
-	@Size(min=2, max=50, message="Last Name should have atleast 2 characters")
+	@Size(min=2, max=50, message="Last Name should have at least 2 characters")
 	private String lastname;
 
 	public Long getId() {

@@ -45,9 +45,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private OAuth2AuthenticationFailureHandler oAuth2AuthenticationFailureHandler;
 
-//    @Autowired
-//    private HttpCookieOAuth2AuthorizationRequestRepository httpCookieOAuth2AuthorizationRequestRepository;
-
     @Bean
     public TokenAuthenticationFilter tokenAuthenticationFilter() {
         return new TokenAuthenticationFilter();
@@ -113,6 +110,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         .permitAll()
                     .antMatchers("/auth/**", "/oauth2/**")
                         .permitAll()
+                    // swagger
+                    .antMatchers("/swagger-ui.html", "/webjars/**", "/v2/**", "/swagger-resources/**")
+                    	.permitAll()
                     .anyRequest()
                         .authenticated()
                     .and()
@@ -133,54 +133,4 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         // Add our custom Token based authentication filter
         http.addFilterBefore(tokenAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
     }
-    
-	/*
-	@Override
-	protected void configure(HttpSecurity http) throws Exception {
-		http
-			.csrf().disable()
-				.authorizeRequests()
-					.anyRequest().authenticated()
-					.and()
-				.oauth2Login();
-	}
-
-	@Bean
-	public ClientRegistrationRepository clientRegistrationRepository() {
-		return new InMemoryClientRegistrationRepository(this.googleClientRegistration(),
-				this.facebookClientRegistration());
-	}
-
-	private ClientRegistration googleClientRegistration() {
-		return ClientRegistration.withRegistrationId("google")
-				.clientId("394339990659-h4buadni96tk0u6i1j6ot1m6fgrq8caj.apps.googleusercontent.com")
-				.clientSecret("lK93WZTXGTHZBhbDpTAllAuc")
-				.clientAuthenticationMethod(ClientAuthenticationMethod.BASIC)
-				.authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
-				.redirectUriTemplate("{baseUrl}/login/oauth2/code/{registrationId}")
-				.scope("openid", "profile", "email", "address", "phone")
-				.authorizationUri("https://accounts.google.com/o/oauth2/v2/auth")
-				.tokenUri("https://www.googleapis.com/oauth2/v4/token")
-				.userInfoUri("https://www.googleapis.com/oauth2/v3/userinfo")
-				.userNameAttributeName(IdTokenClaimNames.SUB)
-				.jwkSetUri("https://www.googleapis.com/oauth2/v3/certs")
-				.clientName("Google")
-				.build();
-	}
-	
-	private ClientRegistration facebookClientRegistration() {
-		return ClientRegistration.withRegistrationId("facebook")
-				.clientId("345974079433578")
-				.clientSecret("6a682ace7f4367045f49709ceb0ccd5a")
-				.tokenUri("https://graph.facebook.com/oauth/access_token")
-				.authorizationUri("https://www.facebook.com/dialog/oauth")
-				.scope("email", "public_profile")
-				.userInfoUri("https://graph.facebook.com/me")
-				
-				.clientAuthenticationMethod(ClientAuthenticationMethod.BASIC)
-				.authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
-				.redirectUriTemplate("{baseUrl}/login/oauth2/code/{registrationId}")
-				.clientName("Facebook")
-				.build();
-	}*/
 }

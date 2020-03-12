@@ -1,5 +1,7 @@
 package com.karinasoft.practimep.domain;
 
+import java.util.List;
+
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 
@@ -14,27 +16,30 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.karinasoft.practimep.utils.AuthProvider;
 
 @Table
-public class Usuario {
-	
+public class User {
+
 	@Column
 	private String name;
-	
+
 	@Email
 	@Column
 	@PrimaryKeyColumn(name = "email", ordinal = 2, type = PrimaryKeyType.PARTITIONED, ordering = Ordering.DESCENDING)
 	private String email;
-	
+
 	private String imageUrl;
-	
+
 	@Column
 	private Boolean emailVerified = false;
-	
+
 	@JsonIgnore
 	private String password;
-	
+
 	@NotNull
 	private AuthProvider provider;
-	
+
+	@NotNull
+	private List<String> roles;
+
 	private String providerId;
 
 	public String getName() {
@@ -85,6 +90,14 @@ public class Usuario {
 		this.provider = provider;
 	}
 
+	public List<String> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(List<String> roles) {
+		this.roles = roles;
+	}
+
 	public String getProviderId() {
 		return providerId;
 	}
@@ -104,6 +117,7 @@ public class Usuario {
 		result = prime * result + ((password == null) ? 0 : password.hashCode());
 		result = prime * result + ((provider == null) ? 0 : provider.hashCode());
 		result = prime * result + ((providerId == null) ? 0 : providerId.hashCode());
+		result = prime * result + ((roles == null) ? 0 : roles.hashCode());
 		return result;
 	}
 
@@ -115,7 +129,7 @@ public class Usuario {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Usuario other = (Usuario) obj;
+		User other = (User) obj;
 		if (email == null) {
 			if (other.email != null)
 				return false;
@@ -148,16 +162,19 @@ public class Usuario {
 				return false;
 		} else if (!providerId.equals(other.providerId))
 			return false;
+		if (roles == null) {
+			if (other.roles != null)
+				return false;
+		} else if (!roles.equals(other.roles))
+			return false;
 		return true;
 	}
 
 	@Override
 	public String toString() {
-		return "Usuario [name=" + name + ", email=" + email + ", imageUrl=" + imageUrl
-				+ ", emailVerified=" + emailVerified + ", password=" + password + ", provider=" + provider
-				+ ", providerId=" + providerId + "]";
+		return "User [name=" + name + ", email=" + email + ", imageUrl=" + imageUrl + ", emailVerified=" + emailVerified
+				+ ", password=" + password + ", provider=" + provider + ", roles=" + roles + ", providerId="
+				+ providerId + "]";
 	}
-	
-	
 
 }

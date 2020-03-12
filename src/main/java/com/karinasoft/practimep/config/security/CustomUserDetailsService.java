@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.karinasoft.practimep.db.repository.UsuarioRepository;
-import com.karinasoft.practimep.domain.Usuario;
+import com.karinasoft.practimep.domain.User;
 import com.karinasoft.practimep.exceptions.ResourceNotFoundException;
 
 /**
@@ -26,7 +26,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Transactional
     public UserDetails loadUserByUsername(String email)
             throws UsernameNotFoundException {
-        Usuario user = userRepository.findByEmail(email).orElseThrow(
+        User user = userRepository.findByEmail(email).orElseThrow(
         		() -> new UsernameNotFoundException("User not found with email : " + email)
         );
 

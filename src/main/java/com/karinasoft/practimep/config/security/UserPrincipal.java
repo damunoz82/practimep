@@ -5,12 +5,13 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 
-import com.karinasoft.practimep.domain.Usuario;
+import com.karinasoft.practimep.domain.User;
 
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class UserPrincipal implements OAuth2User, UserDetails {
     /**
@@ -28,18 +29,15 @@ public class UserPrincipal implements OAuth2User, UserDetails {
         this.authorities = authorities;
     }
 
-    public static UserPrincipal create(Usuario user) {
-        List<GrantedAuthority> authorities = Collections.
-                singletonList(new SimpleGrantedAuthority("ROLE_USER"));
-
+    public static UserPrincipal create(User user) {
 		return new UserPrincipal(
                 user.getEmail(),
                 user.getPassword(),
-                authorities
+                user.getRoles().stream().map(r -> new SimpleGrantedAuthority(r)).collect(Collectors.toList())
         );
     }
 
-    public static UserPrincipal create(Usuario user, Map<String, Object> attributes) {
+    public static UserPrincipal create(User user, Map<String, Object> attributes) {
         UserPrincipal userPrincipal = UserPrincipal.create(user);
         userPrincipal.setAttributes(attributes);
         return userPrincipal;

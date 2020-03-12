@@ -4,11 +4,11 @@ import java.util.Optional;
 
 import org.springframework.data.cassandra.repository.CassandraRepository;
 
-import com.karinasoft.practimep.domain.Usuario;
+import com.karinasoft.practimep.domain.User;
 
-public interface UsuarioRepository extends CassandraRepository<Usuario, Long> {
+public interface UsuarioRepository extends CassandraRepository<User, Long> {
 	
-	Optional<Usuario> findByEmail(String email);
+	Optional<User> findByEmail(String email);
 	
 	Boolean existsByEmail(String email);
 

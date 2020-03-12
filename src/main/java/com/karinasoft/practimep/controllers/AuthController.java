@@ -12,16 +12,18 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.karinasoft.practimep.config.security.TokenProvider;
 import com.karinasoft.practimep.db.repository.UsuarioRepository;
-import com.karinasoft.practimep.domain.Usuario;
+import com.karinasoft.practimep.domain.User;
 import com.karinasoft.practimep.exceptions.BadRequestException;
 import com.karinasoft.practimep.payload.ApiResponse;
 import com.karinasoft.practimep.payload.AuthResponse;
 import com.karinasoft.practimep.payload.LoginRequest;
 import com.karinasoft.practimep.payload.SignUpRequest;
 import com.karinasoft.practimep.utils.AuthProvider;
+import com.karinasoft.practimep.utils.RoleProvider;
 
 import javax.validation.Valid;
 import java.net.URI;
+import java.util.List;
 
 @RestController
 @RequestMapping("/auth")
@@ -62,15 +64,16 @@ public class AuthController {
         }
 
         // Creating user's account
-        Usuario user = new Usuario();
+        User user = new User();
         user.setName(signUpRequest.getName());
         user.setEmail(signUpRequest.getEmail());
         user.setPassword(signUpRequest.getPassword());
         user.setProvider(AuthProvider.local);
+        user.setRoles(List.of(RoleProvider.ROLE_USER.toString()));   // DEFAULT USER ROLE...  OTHER ROLES ARE GRANTED PER REQUEST.
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
-        Usuario result = userRepository.save(user);
+        User result = userRepository.save(user);
 
         URI location = ServletUriComponentsBuilder
                 .fromCurrentContextPath().path("/user/me")

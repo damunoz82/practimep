@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.cassandra.core.CassandraOperations;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,6 +29,7 @@ public class StudentController {
 	private CassandraOperations cassandraTemplate;
 
 	@RequestMapping(value = "/students/{id}", method = RequestMethod.DELETE)
+	@PreAuthorize("hasRole('USER')")
 	public ResponseEntity<Object> deleteStudent(@PathVariable("id") int id) {
 		
 		logger.debug("In delete student - id: " + id);
@@ -38,6 +40,7 @@ public class StudentController {
 	}
 
 	@RequestMapping(value = "/students/{id}", method = RequestMethod.PUT)
+	@PreAuthorize("hasRole('USER')")
 	public ResponseEntity<Object> updateStudent(@PathVariable("id") String id, @Valid @RequestBody Student student) {
 		
 		logger.debug("In update student - student: " + student.toString());
@@ -48,6 +51,7 @@ public class StudentController {
 	}
 
 	@RequestMapping(value = "/students", method = RequestMethod.POST)
+	@PreAuthorize("hasRole('USER')")
 	public ResponseEntity<Object> createStudent(@Valid @RequestBody Student student) {
 		
 		logger.debug("In create student - student: " + student.toString());
@@ -58,6 +62,7 @@ public class StudentController {
 	}
 
 	@RequestMapping(value = "/students", method = RequestMethod.GET)
+	@PreAuthorize("hasRole('USER')")
 	public ResponseEntity<Object> getStudents() {
 		
 		logger.debug("In get all student");
@@ -68,6 +73,7 @@ public class StudentController {
 	}
 	
 	@RequestMapping(value = "/students/{id}", method = RequestMethod.GET)
+	@PreAuthorize("hasRole('USER')")
 	public ResponseEntity<Object> getStudent(@PathVariable("id") int id) {
 		
 		logger.debug("In get student - id: " + id);

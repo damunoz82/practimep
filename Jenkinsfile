@@ -1,16 +1,46 @@
 pipeline {
+  agent any
+  
   environment {
     registry = "karinasoft/social-networking"
     registryCredential = 'dockerhub'
     dockerImage = ''
   }
-  agent any
+  
+  tools {
+    maven "Maven"
+  }
+  
   stages {
     stage('Cloning Git') {
       steps {
         git 'https://github.com/damunoz82/practimep.git'
       }
     }
+    
+    stage('Clean') {
+      steps {
+        sh 'mvn clean'
+      }
+    }
+    
+    stage('Build') {
+      steps {
+        sh 'mvn -B -DskipTests clean package'
+      }
+    }
+    
+    stage('Test') {
+      steps {
+        sh 'mvn test'
+      }
+      post {
+        always {
+          junit 'target/surefile-reports/*.xml'
+        }
+      }
+    }
+    
     stage('Building image') {
       steps{
         script {
@@ -18,6 +48,7 @@ pipeline {
         }
       }
     }
+    
     stage('Deploy Image') {
       steps{
         script {
@@ -27,6 +58,7 @@ pipeline {
         }
       }
     }
+    
     stage('Remove Unused docker image') {
       steps{
         sh "docker rmi $registry:$BUILD_NUMBER"

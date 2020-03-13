@@ -30,11 +30,6 @@ pipeline {
       steps {
         sh 'mvn test'
       }
-      post {
-        always {
-          junit 'target/surefile-reports/*.xml'
-        }
-      }
     }
     
     stage('Building image') {

@@ -7,9 +7,7 @@ pipeline {
     dockerImage = ''
   }
   
-  tools {
-    maven "Maven"
-  }
+
   
   stages {
     stage('Cloning Git') {

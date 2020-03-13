@@ -1,14 +1,6 @@
 server:
   port: 8080
 
-cassandra:
-  contactpoints: 192.168.1.50
-  port: 9042
-  keyspace: sample_demo
-  basePackages: com.karinasoft.practimep.db.repository
-  username: developer
-  password: Develop1
-
 logging:
   level:
     root: INFO
@@ -19,6 +11,17 @@ logging:
 spring:
   thymeleaf:
     cache: false
+  jpa:
+    database: POSTGRESQL
+    show-sql: true
+    generate-ddl: true
+    hibernate:      ddl-auto: update
+    properties:
+      hibernate:
+        jdbc.lob.non_contextual_creation: true
+  datasource:    url: jdbc:postgresql://localhost:5432/socialNetworking
+    username: developer
+    password: developer
   security:
       oauth2:
         client:

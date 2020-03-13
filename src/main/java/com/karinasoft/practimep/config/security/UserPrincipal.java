@@ -8,7 +8,6 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import com.karinasoft.practimep.domain.User;
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -33,7 +32,7 @@ public class UserPrincipal implements OAuth2User, UserDetails {
 		return new UserPrincipal(
                 user.getEmail(),
                 user.getPassword(),
-                user.getRoles().stream().map(r -> new SimpleGrantedAuthority(r)).collect(Collectors.toList())
+                List.of(user.getRoles()).stream().map(r -> new SimpleGrantedAuthority(r)).collect(Collectors.toList())
         );
     }
 

@@ -2,20 +2,19 @@ package com.karinasoft.practimep.domain;
 
 import java.util.List;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.cassandra.core.cql.Ordering;
-import org.springframework.data.cassandra.core.cql.PrimaryKeyType;
-import org.springframework.data.cassandra.core.mapping.Column;
-import org.springframework.data.cassandra.core.mapping.PrimaryKeyColumn;
-import org.springframework.data.cassandra.core.mapping.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.karinasoft.practimep.utils.AuthProvider;
 
-@Table
+@Entity
+@Table(name = "usuario")
 public class User {
 
 	@Column
@@ -23,7 +22,8 @@ public class User {
 
 	@Email
 	@Column
-	@PrimaryKeyColumn(name = "email", ordinal = 2, type = PrimaryKeyType.PARTITIONED, ordering = Ordering.DESCENDING)
+	//@PrimaryKeyColumn(name = "email", ordinal = 2, type = PrimaryKeyType.PARTITIONED, ordering = Ordering.DESCENDING)
+	@Id
 	private String email;
 
 	private String imageUrl;
@@ -38,7 +38,7 @@ public class User {
 	private AuthProvider provider;
 
 	@NotNull
-	private List<String> roles;
+	private String roles;
 
 	private String providerId;
 
@@ -90,11 +90,11 @@ public class User {
 		this.provider = provider;
 	}
 
-	public List<String> getRoles() {
+	public String getRoles() {
 		return roles;
 	}
 
-	public void setRoles(List<String> roles) {
+	public void setRoles(String roles) {
 		this.roles = roles;
 	}
 

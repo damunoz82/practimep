@@ -69,7 +69,7 @@ public class AuthController {
         user.setEmail(signUpRequest.getEmail());
         user.setPassword(signUpRequest.getPassword());
         user.setProvider(AuthProvider.local);
-        user.setRoles(List.of(RoleProvider.ROLE_USER.toString()));   // DEFAULT USER ROLE...  OTHER ROLES ARE GRANTED PER REQUEST.
+        user.setRoles(RoleProvider.ROLE_USER.toString());   // DEFAULT USER ROLE...  OTHER ROLES ARE GRANTED PER REQUEST.
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 

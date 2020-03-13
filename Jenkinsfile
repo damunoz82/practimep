@@ -10,7 +10,7 @@ pipeline {
   stages {
     stage('Cloning Git') {
       steps {
-        git branch: 'developer', url: 'https://github.com/damunoz82/practimep.git'
+        git url: 'https://github.com/damunoz82/practimep.git'
       }
     }
     
